@@ -43,28 +43,29 @@ int main()
 	if(CheckLua(L, luaL_dofile(L, "VideoExample.lua")))
 	{
 
-		lua_getglobal(L, "PlayerName");
-		if (lua_isstring(L, -1))
+		lua_getglobal(L, "player");
+		if (lua_istable(L, -1))
 		{
+			lua_pushstring(L, "Name");
+			lua_gettable(L, -2);
 			player.name = lua_tostring(L, -1);
+			lua_pop(L, 1);
 
-		}
-		lua_getglobal(L, "PlayerTitle");
-		if (lua_isstring(L, -1))
-		{
-			player.title = lua_tostring(L, -1);
-
-		}
-		lua_getglobal(L, "PlayerFamily");
-		if (lua_isstring(L, -1))
-		{
+			lua_pushstring(L, "Family");
+			lua_gettable(L, -2);
 			player.family = lua_tostring(L, -1);
+			lua_pop(L, 1);
 
-		}
-		lua_getglobal(L, "PlayerLevel");
-		if (lua_isnumber(L, -1))
-		{
-			player.level = (int)lua_tointeger(L, -1);
+			lua_pushstring(L, "Title");
+			lua_gettable(L, -2);
+			player.title = lua_tostring(L, -1);
+			lua_pop(L, 1);
+
+			// Note for Level the key is a string but we are expecting an integer
+			lua_pushstring(L, "Level");
+			lua_gettable(L, -2);
+			player.level = lua_tointeger(L, -1);
+			lua_pop(L, 1);
 
 		}
 
