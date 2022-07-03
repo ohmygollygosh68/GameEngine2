@@ -25,7 +25,13 @@ bool CheckLua(lua_State* L, int r)
 int main()
 {
 
-	
+	struct Player
+	{
+		std::string title;
+		std::string name;
+		std::string family;
+		int level;
+	} player;
 
 	lua_State* L = luaL_newstate();
 	luaL_openlibs(L);
@@ -33,11 +39,11 @@ int main()
 	if(CheckLua(L, luaL_dofile(L, "VideoExample.lua")))
 	{
 
-		lua_getglobal(L, "a");
-		if (lua_isnumber(L, -1))
+		lua_getglobal(L, "PlayerName");
+		if (lua_isstring(L, -1))
 		{
-			float a_in_cpp = (float)lua_tonumber(L, -1);
-			std::cout << "a_in_cpp = " << a_in_cpp << std::endl;
+			player.name = lua_tostring(L, -1);
+			std::cout << player.name << std::endl;
 
 		}
 	}
