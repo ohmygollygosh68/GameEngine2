@@ -42,8 +42,26 @@ int main()
 
 	if(CheckLua(L, luaL_dofile(L, "VideoExample.lua")))
 	{
+		lua_getglobal(L, "AddStuff");
+		if (lua_isfunction(L, -1))
+		{
+			lua_pushnumber(L, 3.5f);
+			lua_pushnumber(L, 7.1f);
+
+			if (CheckLua(L, lua_pcall(L, 2, 1, 0)))
+			{
+				std::cout << "[C++] Called in Lua 'AddStuff(3.5f, 7.1f)', got "
+					<< (float)lua_tonumber(L, -1) << std::endl;
+				 
+			}
+
+
+		}
+
+
+
 		// Read Table Object
-		lua_getglobal(L, "player");
+		/*lua_getglobal(L, "player");
 		if (lua_istable(L, -1))
 		{
 			lua_pushstring(L, "Name");
@@ -70,7 +88,7 @@ int main()
 		}
 
 		std::cout << player.title << " " << player.name << " of " <<
-			player.family << "[Lvl: " << player.level << "]" << std::endl;
+			player.family << "[Lvl: " << player.level << "]" << std::endl;*/
 
 	}
 

@@ -13,3 +13,9 @@
 -- player["Level"] = 20
 
 player = { Title = "Squire", Name = "Ciaran", Family = "Wirral", Level = 20}
+
+
+function AddStuff(a, b)
+	print("[LUA] AddStuff("..a..", "..b..") called \n")
+	return a + b
+end
