@@ -16,9 +16,10 @@ extern "C"
 int main()
 {
 
-	std::string cmd = "a = 7 + 11";
+	std::string cmd = "a = 7 + 11 + math.sin(23.7)";
 
 	lua_State* L = luaL_newstate();
+	luaL_openlibs(L);
 
 	int r = luaL_dostring(L, cmd.c_str());
 
