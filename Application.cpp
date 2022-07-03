@@ -20,6 +20,7 @@ bool CheckLua(lua_State* L, int r)
 		std::cout << errormsg << std::endl;
 		return false;
 	}
+	return true;
 }
 
 int main()
@@ -33,7 +34,10 @@ int main()
 		int level;
 	} player;
 
+	// Create Lua State
 	lua_State* L = luaL_newstate();
+
+	// Add standard libraries to Lua Virtual Machine
 	luaL_openlibs(L);
 
 	if(CheckLua(L, luaL_dofile(L, "VideoExample.lua")))
@@ -43,9 +47,30 @@ int main()
 		if (lua_isstring(L, -1))
 		{
 			player.name = lua_tostring(L, -1);
-			std::cout << player.name << std::endl;
 
 		}
+		lua_getglobal(L, "PlayerTitle");
+		if (lua_isstring(L, -1))
+		{
+			player.title = lua_tostring(L, -1);
+
+		}
+		lua_getglobal(L, "PlayerFamily");
+		if (lua_isstring(L, -1))
+		{
+			player.family = lua_tostring(L, -1);
+
+		}
+		lua_getglobal(L, "PlayerLevel");
+		if (lua_isnumber(L, -1))
+		{
+			player.level = (int)lua_tointeger(L, -1);
+
+		}
+
+		std::cout << player.title << " " << player.name << " of " <<
+			player.family << "[Lvl: " << player.level << "]" << std::endl;
+
 	}
 
 
