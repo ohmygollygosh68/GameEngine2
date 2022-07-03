@@ -25,12 +25,14 @@ bool CheckLua(lua_State* L, int r)
 
 int lua_HostFunction(lua_State *L)
 {
-	float a = (float)lua_tonumber(L, 1);
+	// int n = lua_gettop(L) returns the number of arguments. Not used here.
+	float a = (float)lua_tonumber(L, 1); // Fresh stack so not necessary to use -1 although this does work
 	float b = (float)lua_tonumber(L, 2);
 	std::cout << "[C++] HostFunction(" << a << ", " << b << ") called" << std::endl;
 	float c = a * b;
 	lua_pushnumber(L, c);
-	return 1;
+	return 1; // This is just the number of arguments passed back to Lua. In this case the value used for variable c. It does not have to be just 1.
+
 }
 
 int main()
@@ -49,7 +51,7 @@ int main()
 
 	// Add standard libraries to Lua Virtual Machine
 	luaL_openlibs(L);
-
+	// Link the C++ function to the virtual machine
 	lua_register(L, "HostFunction", lua_HostFunction);
 
 	if(CheckLua(L, luaL_dofile(L, "VideoExample.lua")))
