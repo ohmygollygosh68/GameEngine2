@@ -42,16 +42,43 @@ int main()
 
 	if(CheckLua(L, luaL_dofile(L, "VideoExample.lua")))
 	{
-		lua_getglobal(L, "AddStuff");
+		lua_getglobal(L, "GetPlayer");
 		if (lua_isfunction(L, -1))
 		{
-			lua_pushnumber(L, 3.5f);
-			lua_pushnumber(L, 7.1f);
+			lua_pushnumber(L, 1);
 
-			if (CheckLua(L, lua_pcall(L, 2, 1, 0)))
+
+			if (CheckLua(L, lua_pcall(L, 1, 1, 0)))
 			{
-				std::cout << "[C++] Called in Lua 'AddStuff(3.5f, 7.1f)', got "
-					<< (float)lua_tonumber(L, -1) << std::endl;
+				if (lua_istable(L, -1))
+				{
+					lua_pushstring(L, "Name");
+					lua_gettable(L, -2);
+					player.name = lua_tostring(L, -1);
+					lua_pop(L, 1);
+
+					lua_pushstring(L, "Family");
+					lua_gettable(L, -2);
+					player.family = lua_tostring(L, -1);
+					lua_pop(L, 1);
+
+					lua_pushstring(L, "Title");
+					lua_gettable(L, -2);
+					player.title = lua_tostring(L, -1);
+					lua_pop(L, 1);
+
+					// Note for Level the key is a string but we are expecting an integer
+					lua_pushstring(L, "Level");
+					lua_gettable(L, -2);
+					player.level = lua_tointeger(L, -1);
+					lua_pop(L, 1);
+
+				}
+
+				std::cout << player.title << " " << player.name << " of " <<
+					player.family << "[Lvl: " << player.level << "]" << std::endl;
+
+
 				 
 			}
 
