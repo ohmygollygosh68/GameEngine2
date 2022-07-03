@@ -42,7 +42,7 @@ int main()
 
 	if(CheckLua(L, luaL_dofile(L, "VideoExample.lua")))
 	{
-
+		// Read Table Object
 		lua_getglobal(L, "player");
 		if (lua_istable(L, -1))
 		{
